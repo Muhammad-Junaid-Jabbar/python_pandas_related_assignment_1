@@ -1,0 +1,36 @@
+from datetime import datetime
+
+duration_list =[]
+for i in range(len(dframe)):
+    str_dt1 =str(dframe["JoinDate"][i])
+    str_dt2 =str(dframe["LeftDate"][i])
+    try:
+        # convert string to datetime
+        
+        dt1 = datetime.strptime(str_dt1, "%Y-%m-%d")
+        dt2 = datetime.strptime(str_dt2, "%Y-%m-%d")
+        delta = dt2 - dt1
+        total_service = float(delta.days/365)
+        duration_list.append(total_service)
+    except:
+        # convert string to datetime
+        try:
+            dt1 = datetime.strptime(str_dt1, "%Y-%m-%d %H:%M:%S")
+            dt2 = datetime.strptime(str_dt2, "%Y-%m-%d %H:%M:%S")
+            delta = dt2 - dt1
+            total_service = round(float(delta.days/365),1)
+            duration_list.append(total_service)
+        except:
+            duration_list.append(0)
+
+data_service = {'Staff': dframe['Staff'],'length of service': duration_list}
+df3 = pd.DataFrame(data_service,columns=['Staff','length of service'])
+print(df3)
+
+mean_ = round(df3["length of service"].mean(),1)
+max_ = round(df3["length of service"].max(),1)
+min_ = round(df3["length of service"].min(),1)
+data_service1 = {" ":['mean','max','min'],'length of service': [mean_,max_,min_]}
+df4 = pd.DataFrame.from_dict(data_service1)
+
+print(df4)
